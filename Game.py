@@ -4,6 +4,7 @@ from turret import Turret
 from towerUpgradeMenu import TowerUpgradeMenu
 from level1 import Level1
 from archer import Archer
+from player import Player
 import json
 
 FPS = 60
@@ -40,6 +41,10 @@ turret_image_lvl2 = pygame.image.load("assets/towers/archerTower2.png").convert_
 archer_image = pygame.image.load("assets/archers/archer.png").convert_alpha()
 
 upgrade_button = pygame.image.load("assets/content/UI/Button_Hover.png").convert_alpha()
+coin_image = pygame.image.load("assets/content/UI/coin_32px.png").convert_alpha()
+player_heart_image = pygame.image.load("assets/content/UI/player_heart_32px.png").convert_alpha()
+
+player = Player(coin_image, player_heart_image)
 
 # load json data for level
 with open("assets/map/trasa1..tmj") as file:
@@ -80,11 +85,15 @@ while window_open:
     # draw level
     mapa.draw(screen)
 
+    # draw coin
+    player.draw(screen)
+
     # draw enemy path
     pygame.draw.lines(screen, "grey0", False, mapa.waypoints)
 
     # update groups
-    enemy_group.update()
+    enemy_group.update(player)
+    archer_group.update(enemy_group)
 
     # draw groups
     enemy_group.draw(screen)
@@ -134,12 +143,14 @@ while window_open:
                 for turret in turret_group:
                     if turret.rect.topleft == turret_position:
                         # Jeśli kliknięto na przycisk ulepszenia, aktualizuj wieżę
-                        if turret.image == turret_image_lvl0:
+                        if turret.image == turret_image_lvl0 and player.gold >= 100:
+                            player.gold -= 100
                             turret.image = turret_image_lvl1  # Zaktualizuj obrazek wieży do lvl1
                             archer = Archer(archer_image, turret.rect, (5, 30))
                             archer_group.add(archer)
                             turret_archer_dict[turret] = archer  # Store archer reference for turret
-                        elif turret.image == turret_image_lvl1:
+                        elif turret.image == turret_image_lvl1 and player.gold >= 250:
+                            player.gold -= 250
                             # Remove previous archer
                             if turret in turret_archer_dict:
                                 archer_group.remove(turret_archer_dict[turret])
@@ -151,10 +162,6 @@ while window_open:
 
         if event.type == pygame.QUIT:
             window_open = False
-
-    # Atakuj wrogów
-    for archer in archer_group:
-        archer.attack_enemy(enemy_group)
 
     # Aktualizuj menu
     tower_upgrade_menu.update(screen)

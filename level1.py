@@ -2,7 +2,7 @@ from Enemy import Enemy
 class Level1:
 
     def __init__(self, orc_image, enemy_group, mapa):
-        self.amount_of_orcs = 5
+        self.amount_of_orcs = 6
         self.orc_spawn_interval = 500 #Interwał pojawiania się nowych orków w sekundach
         self.orc_spawn_timer = 0  # Licznik czasu do następnego pojawienia się orka
         self.orc_spawned = 0  # Licznik orków, które już się pojawiły

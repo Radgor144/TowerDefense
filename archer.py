@@ -13,8 +13,8 @@ class Archer(pygame.sprite.Sprite):
         self.position = self.rect.center
 
         # strzelanie
-        self.range = 100
-        self.cooldown = 1500
+        self.range = 150
+        self.cooldown = 650
         self.last_shot = pygame.time.get_ticks()
         self.selected = True
 
@@ -32,11 +32,15 @@ class Archer(pygame.sprite.Sprite):
         if self.selected:
             surface.blit(self.range_image, self.range_rect)
 
-    def attack_enemy(self, enemies):
-        for enemy in enemies:
-            distance = math.hypot(self.position[0] - enemy.rect.center[0], self.position[1] - enemy.rect.center[1])
-            if distance <= self.range:
-                print(distance)
-                print("atak")
-                # Atakuj wroga
+    def update(self, enemy_group):
+        if pygame.time.get_ticks() - self.last_shot > self.cooldown:
+            # Znajdź pierwszego wroga w zasięgu i zaatakuj
+            for enemy in enemy_group:
+                distance = math.hypot(self.position[0] - enemy.rect.center[0], self.position[1] - enemy.rect.center[1])
+                if distance <= self.range:
+                    # print("atak")
+                    enemy.health_point -= 34
+                    self.last_shot = pygame.time.get_ticks()  # Zaktualizuj czas ostatniego strzału
+                    break
+
 

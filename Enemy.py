@@ -1,6 +1,8 @@
 import pygame
 from pygame.math import Vector2
 import math
+
+
 class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, waypoints, image):
@@ -21,35 +23,38 @@ class Enemy(pygame.sprite.Sprite):
         self.hp_rect = pygame.Rect(0, 0, 20, 5)  # początkowe ustawienia prostokąta paska HP
 
         # Timer do odliczania czasu do odjęcia punktów zdrowia
-        self.health_timer = pygame.time.get_ticks()
-        self.health_interval = 50  # Czas w milisekundach między odjęciami punktów zdrowia
+        # self.health_timer = pygame.time.get_ticks()
+        # self.health_interval = 50  # Czas w milisekundach między odjęciami punktów zdrowia
 
-    def update(self):
-        self.move()
+    def update(self, player):
+        self.move(player)
         self.rotate()
         self.hp_position()  # Aktualizuj pozycję paska HP
 
         # Aktualizuj pasek HP
-        self.update_health_bar()
+        self.update_health_bar(player)
 
         # Odjęcie punktów zdrowia co pewien czas
-        now = pygame.time.get_ticks()
-        if now - self.health_timer > self.health_interval:
-            self.health_timer = now
-            self.health_point -= 1
-            if self.health_point <= 0:
-                self.kill()  # Jeśli zdrowie spadnie do zera lub mniej, usuń jednostkę
+        # now = pygame.time.get_ticks()
+        # if now - self.health_timer > self.health_interval:
+        #     self.health_timer = now
+        #     self.health_point -= 1
+        #     if self.health_point <= 0:
+        #         self.kill()  # Jeśli zdrowie spadnie do zera lub mniej, usuń jednostkę
 
     def hp_position(self):
         x, y = self.rect.center
         self.hp_rect.topleft = (x - 10, y - 20)  # Aktualizuj pozycję paska HP
 
-    def update_health_bar(self):
+    def update_health_bar(self, player):
         # Oblicz szerokość paska HP proporcjonalnie do aktualnego zdrowia
         health_width = int((self.health_point / self.max_health) * 20)
         self.hp_rect.width = max(health_width, 0)  # Szerokość paska HP nie może być mniejsza niż 0
+        if self.health_point <= 0:
+            self.kill()
+            player.gold += 50
 
-    def move(self):
+    def move(self, player):
         # define target waypoint
         if self.target_waypoint < len(self.waypoints):
             self.target = Vector2(self.waypoints[self.target_waypoint])
@@ -57,6 +62,8 @@ class Enemy(pygame.sprite.Sprite):
         else:
             # enemy has reached the end of the path
             self.kill()
+            player.health_points -= 1
+            player.gold -= 50
 
         # calculate distance to target
         distance = self.movement.length()
