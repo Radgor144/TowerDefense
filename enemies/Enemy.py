@@ -3,6 +3,7 @@ from pygame.math import Vector2
 import math
 
 
+
 class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, waypoints, image):
@@ -44,12 +45,17 @@ class Enemy(pygame.sprite.Sprite):
         self.hp_rect.topleft = (x - 10, y - 20)  # Aktualizuj pozycję paska HP
 
     def update_health_bar(self, player):
+        from .Orc import Orc
+        from .Wolf import Wolf
         # Oblicz szerokość paska HP proporcjonalnie do aktualnego zdrowia
         health_width = int((self.health_point / self.max_health) * 20)
         self.hp_rect.width = max(health_width, 0)  # Szerokość paska HP nie może być mniejsza niż 0
         if self.health_point <= 0:
             self.kill()
-            player.gold += 50
+            if isinstance(self, Orc):
+                player.gold += self.gold_for_kill
+            elif isinstance(self, Wolf):
+                player.gold += self.gold_for_kill
 
     def move(self, player):
         # define target waypoint

@@ -1,13 +1,13 @@
 import pygame
 
-from enemies.Enemy import Enemy
+from .Enemy import Enemy
 
 
 class Orc(Enemy):
 
     def __init__(self, waypoints, image):
         super().__init__(waypoints, image)
-        self.speed = 2.5
+        self.speed = 2
         self.gold_for_kill = 50
 
         # zdrowie jednostki
