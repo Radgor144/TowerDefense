@@ -1,9 +1,9 @@
 import pygame
 from mapa import Mapa
-from turret import Turret
-from towerUpgradeMenu import TowerUpgradeMenu
-from level1 import Level1
-from archer import Archer
+from towers.turret import Turret
+from towers.towerUpgradeMenu import TowerUpgradeMenu
+from levels.level1 import Level1
+from towers.archer import Archer
 from player import Player
 import json
 
@@ -31,9 +31,16 @@ def draw_turret_range(archer, surface):
     if archer.selected:
         surface.blit(archer.range_image, archer.range_rect)
 
+def load_turret_positions():
+    with open("turretPosition.txt", "r") as file:
+        turret_position = file.read().split("\n")
+        for pos in turret_position:
+            x, y = map(int, pos.split(' '))
+            turret = Turret(turret_image_lvl0)
+            turret.rect.topleft = (x, y)
+            turret_group.add(turret)
 
 # load images
-orc = pygame.image.load("assets/enemy/2/D_walk/orc1.png").convert_alpha()
 map_image = pygame.image.load("assets/map/mapa1.png").convert_alpha()
 turret_image_lvl0 = pygame.image.load("assets/towers/toBuild.png").convert_alpha()
 turret_image_lvl1 = pygame.image.load("assets/towers/archerTower.png").convert_alpha()
@@ -60,17 +67,12 @@ turret_group = pygame.sprite.Group()
 archer_group = pygame.sprite.Group()
 
 # create levels
-level1 = Level1(orc, enemy_group, mapa)
+level1 = Level1(enemy_group, mapa)
 
 # load turret positions
-with open("turretPosition.txt", "r") as file:
-    turret_position = file.read().split("\n")
-    for pos in turret_position:
-        x, y = map(int, pos.split(' '))
-        turret = Turret(turret_image_lvl0)
-        turret.rect.topleft = (x, y)
-        turret_group.add(turret)
+load_turret_positions()
 
+# tworzenie przycisku menu nad wieza
 tower_upgrade_menu = TowerUpgradeMenu(upgrade_button)
 
 # Dictionary to store archers for each turret

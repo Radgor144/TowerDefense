@@ -10,7 +10,6 @@ class Enemy(pygame.sprite.Sprite):
         self.waypoints = waypoints
         self.position = Vector2(self.waypoints[0])
         self.target_waypoint = 1
-        self.speed = 2
         self.angle = 0
         self.original_image = image
         self.image = pygame.transform.rotate(self.original_image, self.angle)
@@ -18,8 +17,6 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.center = self.position
 
         # Pasek zdrowia
-        self.health_point = 100  # zdrowie jednostki
-        self.max_health = 100  # maksymalna wartość punktów zdrowia
         self.hp_rect = pygame.Rect(0, 0, 20, 5)  # początkowe ustawienia prostokąta paska HP
 
         # Timer do odliczania czasu do odjęcia punktów zdrowia
