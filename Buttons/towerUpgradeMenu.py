@@ -3,10 +3,10 @@ import pygame
 MENU_HEIGHT = 100
 MENU_WIDTH = 100
 
-class TowerUpgradeMenu():
-    def __init__(self, upgrade_button_image):
 
-        self.upgrade_button_image = upgrade_button_image
+class TowerUpgradeMenu():
+    def __init__(self):
+        self.upgrade_button_image = pygame.image.load("assets/content/UI/Button_Hover.png").convert_alpha()
         self.menu_surface = pygame.Surface((0, 0))
         self.menu_rect = pygame.Rect(0, 0, 64, 64)  # Prostokąt menu
         self.button_rect = self.menu_rect
@@ -22,7 +22,6 @@ class TowerUpgradeMenu():
 
         self.is_menu_shown = True
         self.update(surface)
-
 
     def hide_menu(self):
         self.is_menu_shown = False
@@ -42,6 +41,5 @@ class TowerUpgradeMenu():
 
     def update_tower(self, surface, tower_position, turret_lvl):
         print("XXX")
-        x,y = tower_position
+        x, y = tower_position
         surface.blit(turret_lvl, (x, y))
-

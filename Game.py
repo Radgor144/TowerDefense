@@ -1,8 +1,10 @@
 import pygame
+
+from Buttons.Start_wave_button import Start_wave_button
+from levels.Level_Manager import LevelManager
 from mapa import Mapa
 from towers.turret import Turret
-from towers.towerUpgradeMenu import TowerUpgradeMenu
-from levels.level1 import Level1
+from Buttons.towerUpgradeMenu import TowerUpgradeMenu
 from towers.archer import Archer
 from player import Player
 import json
@@ -20,6 +22,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tower Defense")
 clock = pygame.time.Clock()
 
+
 def draw_turret_range(archer, surface):
     """
     Wyświetla zasięg wieży na ekranie, jeśli wieża jest zaznaczona.
@@ -31,6 +34,7 @@ def draw_turret_range(archer, surface):
     if archer.selected:
         surface.blit(archer.range_image, archer.range_rect)
 
+
 def load_turret_positions():
     with open("turretPosition.txt", "r") as file:
         turret_position = file.read().split("\n")
@@ -40,6 +44,7 @@ def load_turret_positions():
             turret.rect.topleft = (x, y)
             turret_group.add(turret)
 
+
 # load images
 map_image = pygame.image.load("assets/map/mapa1.png").convert_alpha()
 turret_image_lvl0 = pygame.image.load("assets/towers/toBuild.png").convert_alpha()
@@ -47,7 +52,6 @@ turret_image_lvl1 = pygame.image.load("assets/towers/archerTower.png").convert_a
 turret_image_lvl2 = pygame.image.load("assets/towers/archerTower2.png").convert_alpha()
 archer_image = pygame.image.load("assets/archers/archer.png").convert_alpha()
 
-upgrade_button = pygame.image.load("assets/content/UI/Button_Hover.png").convert_alpha()
 coin_image = pygame.image.load("assets/content/UI/coin_32px.png").convert_alpha()
 player_heart_image = pygame.image.load("assets/content/UI/player_heart_32px.png").convert_alpha()
 
@@ -66,20 +70,24 @@ enemy_group = pygame.sprite.Group()
 turret_group = pygame.sprite.Group()
 archer_group = pygame.sprite.Group()
 
-# create levels
-level1 = Level1(enemy_group, mapa)
-
 # load turret positions
 load_turret_positions()
 
 # tworzenie przycisku menu nad wieza
-tower_upgrade_menu = TowerUpgradeMenu(upgrade_button)
+tower_upgrade_menu = TowerUpgradeMenu()
+
+# tworzenie przycisku startu levela
+Start_wave_button = Start_wave_button()
 
 # Dictionary to store archers for each turret
 turret_archer_dict = {}
 
+# Initialize level manager
+level_manager = LevelManager(enemy_group, mapa)
+
 # game loop
 window_open = True
+IsStart = False
 while window_open:
 
     screen.fill("grey100")
@@ -93,29 +101,33 @@ while window_open:
     # draw enemy path
     pygame.draw.lines(screen, "grey0", False, mapa.waypoints)
 
+    # draw start wave button
+    Start_wave_button.update(screen)
+
     # update groups
     enemy_group.update(player)
     archer_group.update(enemy_group)
 
-    # draw groups
-    enemy_group.draw(screen)
+    # draw turrets
     turret_group.draw(screen)
+
+    if IsStart:
+        enemy_group.draw(screen)
+
+        for enemy in enemy_group:
+            # Narysuj pasek HP nad jednostką
+            pygame.draw.rect(screen, (0, 255, 0), enemy.hp_rect)
+
+        level_manager.update(pygame.time.get_ticks())
+        IsStart = not level_manager.is_level_finished()
+
+    print(IsStart)
+    if not IsStart:
+        Start_wave_button.is_button_shown = True
 
     for archer in archer_group:
         archer.draw(screen)  # Rysuje archerów
         draw_turret_range(archer, screen)  # Rysuje zasięg dla archerów, jeśli są zaznaczone
-
-    # W głównej pętli gry, po zaktualizowaniu sprite'ów:
-    level1.update(pygame.time.get_ticks())
-
-    # Sprawdź, czy poziom został zakończony
-    if level1.is_level_finished():
-        # Tu możesz dodać kod, który obsługuje zakończenie poziomu, np. przejście do następnego poziomu
-        pass
-
-    for enemy in enemy_group:
-        # Narysuj pasek HP nad jednostką
-        pygame.draw.rect(screen, (0, 255, 0), enemy.hp_rect)
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -161,6 +173,10 @@ while window_open:
                             archer_group.add(archer)
                             turret_archer_dict[turret] = archer  # Store archer reference for turret
                         break
+            if Start_wave_button.red_button_rect.collidepoint(event.pos):
+                IsStart = True
+                Start_wave_button.hide_button()
+                level_manager.start_next_level()
 
         if event.type == pygame.QUIT:
             window_open = False
