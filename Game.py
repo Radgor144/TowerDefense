@@ -45,6 +45,21 @@ def load_turret_positions():
             turret_group.add(turret)
 
 
+def start_wave(IsStart):
+    if IsStart:
+        enemy_group.draw(screen)
+
+        for enemy in enemy_group:
+            # Narysuj pasek HP nad jednostką
+            pygame.draw.rect(screen, (0, 255, 0), enemy.hp_rect)
+
+        level_manager.update(pygame.time.get_ticks())
+        IsStart = not level_manager.is_level_finished()
+
+    if not IsStart:
+        Start_wave_button.is_button_shown = True
+
+
 # load images
 map_image = pygame.image.load("assets/map/mapa1.png").convert_alpha()
 turret_image_lvl0 = pygame.image.load("assets/towers/toBuild.png").convert_alpha()
@@ -84,6 +99,7 @@ turret_archer_dict = {}
 
 # Initialize level manager
 level_manager = LevelManager(enemy_group, mapa)
+level_manager.load_levels()
 
 # game loop
 window_open = True
@@ -98,8 +114,10 @@ while window_open:
     # draw coin
     player.draw(screen)
 
-    # draw enemy path
-    pygame.draw.lines(screen, "grey0", False, mapa.waypoints)
+    # draw enemy paths
+    pygame.draw.lines(screen, "grey0", False, mapa.route1)
+    pygame.draw.lines(screen, "grey0", False, mapa.route2)
+    pygame.draw.lines(screen, "grey0", False, mapa.route3)
 
     # draw start wave button
     Start_wave_button.update(screen)
@@ -111,19 +129,7 @@ while window_open:
     # draw turrets
     turret_group.draw(screen)
 
-    if IsStart:
-        enemy_group.draw(screen)
-
-        for enemy in enemy_group:
-            # Narysuj pasek HP nad jednostką
-            pygame.draw.rect(screen, (0, 255, 0), enemy.hp_rect)
-
-        level_manager.update(pygame.time.get_ticks())
-        IsStart = not level_manager.is_level_finished()
-
-    print(IsStart)
-    if not IsStart:
-        Start_wave_button.is_button_shown = True
+    start_wave(IsStart)
 
     for archer in archer_group:
         archer.draw(screen)  # Rysuje archerów

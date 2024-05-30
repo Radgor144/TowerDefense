@@ -11,9 +11,21 @@ class LevelManager:
 
     def load_levels(self):
         level_configs = [
-            {"amount_of_orcs": 5, "amount_of_wolfs": 2, "orc_spawn_interval": 500, "wolf_spawn_interval": 300},
-            {"amount_of_orcs": 10, "amount_of_wolfs": 5, "orc_spawn_interval": 450, "wolf_spawn_interval": 250},
-            # Add more levels as needed
+            {
+                "orc_spawn_data": [(3, {"route_name": "route1", "spawn_interval": 500}),
+                                   (3, {"route_name": "route2", "spawn_interval": 500}),
+                                   (3, {"route_name": "route3", "spawn_interval": 500})],
+                "wolf_spawn_data": [(5, {"route_name": "route2", "spawn_interval": 400}),
+                                    (2, {"route_name": "route3", "spawn_interval": 400})],
+            },
+            {
+                "orc_spawn_data": [(4, {"route_name": "route1", "spawn_interval": 500}),
+                                   (4, {"route_name": "route2", "spawn_interval": 500}),
+                                   (4, {"route_name": "route3", "spawn_interval": 500})],
+                "wolf_spawn_data": [(2, {"route_name": "route2", "spawn_interval": 500}),
+                                    (2, {"route_name": "route3", "spawn_interval": 500})],
+            },
+            # Dodaj więcej poziomów według potrzeb
         ]
         for config in level_configs:
             self.levels.append(Level(config, self.enemy_group, self.mapa))
@@ -28,11 +40,8 @@ class LevelManager:
     def update(self, current_time):
         if self.current_level:
             self.current_level.update(current_time)
-            if self.is_level_finished():
-                print("koniec lvl")
-
 
     def is_level_finished(self):
         if self.current_level:
             return self.current_level.is_level_finished()
-        return True  # If there are no more levels, consider it finished
+        return True
