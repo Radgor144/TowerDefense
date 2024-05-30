@@ -45,8 +45,8 @@ def load_turret_positions():
             turret_group.add(turret)
 
 
-def start_wave(IsStart):
-    if IsStart:
+def start_wave(is_start):
+    if is_start:
         enemy_group.draw(screen)
 
         for enemy in enemy_group:
@@ -54,10 +54,11 @@ def start_wave(IsStart):
             pygame.draw.rect(screen, (0, 255, 0), enemy.hp_rect)
 
         level_manager.update(pygame.time.get_ticks())
-        IsStart = not level_manager.is_level_finished()
 
-    if not IsStart:
-        Start_wave_button.is_button_shown = True
+
+
+
+
 
 
 # load images
@@ -99,7 +100,7 @@ turret_archer_dict = {}
 
 # Initialize level manager
 level_manager = LevelManager(enemy_group, mapa)
-level_manager.load_levels()
+
 
 # game loop
 window_open = True
@@ -120,7 +121,8 @@ while window_open:
     pygame.draw.lines(screen, "grey0", False, mapa.route3)
 
     # draw start wave button
-    Start_wave_button.update(screen)
+    if level_manager.current_level_index < len(level_manager.levels):
+        Start_wave_button.update(screen, level_manager.level_configs, level_manager.current_level_index)
 
     # update groups
     enemy_group.update(player)
@@ -179,9 +181,11 @@ while window_open:
                             archer_group.add(archer)
                             turret_archer_dict[turret] = archer  # Store archer reference for turret
                         break
-            if Start_wave_button.red_button_rect.collidepoint(event.pos):
+            if (Start_wave_button.red_button_rect1.collidepoint(event.pos) or
+                    Start_wave_button.red_button_rect2.collidepoint(event.pos) or
+                    Start_wave_button.red_button_rect3.collidepoint(event.pos)):
                 IsStart = True
-                Start_wave_button.hide_button()
+                Start_wave_button.hide_buttons()  # Ukryj wszystkie przyciski
                 level_manager.start_next_level()
 
         if event.type == pygame.QUIT:

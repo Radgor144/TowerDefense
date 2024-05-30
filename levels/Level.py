@@ -37,7 +37,7 @@ class Level:
             amount, route = spawn_data
 
             # Wybierz odpowiednie zmienne do śledzenia ilości zespawnowanych przeciwników i timera spawnu
-            spawn_var_name = f"orc_spawned_on_{route['route_name']}"
+            spawn_var_name = f"orc_spawned_on_{route['route_name']}"    # dynamiczna zmiana nazwy zmiennej
             timer_var_name = f"orc_spawn_timer_on_{route['route_name']}"
 
             if getattr(self, spawn_var_name) < amount:

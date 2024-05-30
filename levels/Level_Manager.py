@@ -3,6 +3,7 @@ from levels.Level import Level
 
 class LevelManager:
     def __init__(self, enemy_group, mapa):
+        self.level_configs = None
         self.enemy_group = enemy_group
         self.mapa = mapa
         self.current_level_index = 0
@@ -10,24 +11,38 @@ class LevelManager:
         self.load_levels()
 
     def load_levels(self):
-        level_configs = [
-            {
-                "orc_spawn_data": [(3, {"route_name": "route1", "spawn_interval": 500}),
-                                   (3, {"route_name": "route2", "spawn_interval": 500}),
+        self.level_configs = [
+            {   # 1 poziom
+                "orc_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 500}),
+                                   (0, {"route_name": "route2", "spawn_interval": 500}),
                                    (3, {"route_name": "route3", "spawn_interval": 500})],
-                "wolf_spawn_data": [(5, {"route_name": "route2", "spawn_interval": 400}),
-                                    (2, {"route_name": "route3", "spawn_interval": 400})],
+
+                "wolf_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 200}),
+                                    (0, {"route_name": "route2", "spawn_interval": 200}),
+                                    (2, {"route_name": "route3", "spawn_interval": 200})],
             },
-            {
-                "orc_spawn_data": [(4, {"route_name": "route1", "spawn_interval": 500}),
+            {   # 2 poziom
+                "orc_spawn_data": [(0, {"route_name": "route1", "spawn_interval": 500}),
                                    (4, {"route_name": "route2", "spawn_interval": 500}),
                                    (4, {"route_name": "route3", "spawn_interval": 500})],
-                "wolf_spawn_data": [(2, {"route_name": "route2", "spawn_interval": 500}),
+
+                "wolf_spawn_data": [(0, {"route_name": "route1", "spawn_interval": 500}),
+                                    (2, {"route_name": "route2", "spawn_interval": 500}),
                                     (2, {"route_name": "route3", "spawn_interval": 500})],
+            },
+            {  # 3 poziom
+                "orc_spawn_data": [(4, {"route_name": "route1", "spawn_interval": 500}),
+                                   (0, {"route_name": "route2", "spawn_interval": 500}),
+                                   (0, {"route_name": "route3", "spawn_interval": 500})],
+
+                "wolf_spawn_data": [(2, {"route_name": "route1", "spawn_interval": 500}),
+                                    (0, {"route_name": "route2", "spawn_interval": 500}),
+                                    (0, {"route_name": "route3", "spawn_interval": 500})],
             },
             # Dodaj więcej poziomów według potrzeb
         ]
-        for config in level_configs:
+
+        for config in self.level_configs:
             self.levels.append(Level(config, self.enemy_group, self.mapa))
 
     def start_next_level(self):
