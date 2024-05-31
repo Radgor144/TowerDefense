@@ -29,8 +29,8 @@ class Level:
         self.wolf_spawn_timer_on_route3 = 0
 
         # Load images
-        self.orc_image = pygame.image.load("enemies/assets/orc/orc1.png").convert_alpha()
-        self.wolf_image = pygame.image.load("enemies/assets/wolf/wolf1.png").convert_alpha()
+        self.orc_image = pygame.image.load("assets/orc/orc1.png").convert_alpha()
+        self.wolf_image = pygame.image.load("assets/wolf/wolf1.png").convert_alpha()
 
     def update(self, current_time):
         for spawn_data in self.orc_spawn_data:
