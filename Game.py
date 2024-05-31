@@ -60,13 +60,15 @@ def upgrading_towers(event, turret_group):
         for turret in turret_group:
             if turret.rect.topleft == turret_position:
                 if turret.image == turret_image_lvl0 and player.gold >= 100:
-                    upgrade_tower(turret, 100, turret_image_lvl1, (5, 30), (0, 0), 0, 0)
+                    upgrade_tower(turret, 100, turret_image_lvl1, (5, 30), (0, 0), 0, 800)
                 elif turret.image == turret_image_lvl1 and player.gold >= 250:
-                    upgrade_tower(turret, 250, turret_image_lvl2, (5, 20), (0, 0), 25, 200)
+                    upgrade_tower(turret, 250, turret_image_lvl2, (5, 20), (0, 0), 25, 700)
                 elif turret.image == turret_image_lvl2 and player.gold >= 500:
-                    upgrade_tower(turret, 500, turret_image_lvl3, (5, 20), (0, 10), 25, 200)
-                elif turret.image == turret_image_lvl2 and player.gold >= 700:
-                    upgrade_tower(turret, 500, turret_image_lvl4, (5, 20), (0, 10), 25, 200)
+                    upgrade_tower(turret, 500, turret_image_lvl3, (5, 20), (0, 10), 50, 600)
+                elif turret.image == turret_image_lvl3 and player.gold >= 700:
+                    upgrade_tower(turret, 700, turret_image_lvl4, (5, 42), (0, 23), 75, 500)
+                elif turret.image == turret_image_lvl4 and player.gold >= 900:
+                    upgrade_tower(turret, 900, turret_image_lvl5, (5, 42), (0, 0), 100, 500)
                 break
 
 
@@ -78,7 +80,7 @@ def upgrade_tower(turret, cost, image, archer_pos, tower_pos, range, cooldown):
     turret.new_position(*tower_pos)
     archer = Archer(archer_image, turret.rect, archer_pos)
     archer.range += range
-    archer.cooldown -= cooldown
+    archer.cooldown = cooldown
     archer_group.add(archer)
     turret_archer_dict[turret] = archer
 
@@ -89,6 +91,7 @@ turret_image_lvl1 = pygame.image.load("assets/towers/archerTower.png").convert_a
 turret_image_lvl2 = pygame.image.load("assets/towers/archerTower2.png").convert_alpha()
 turret_image_lvl3 = pygame.image.load("assets/towers/archerTower3.png").convert_alpha()
 turret_image_lvl4 = pygame.image.load("assets/towers/archerTower4.png").convert_alpha()
+turret_image_lvl5 = pygame.image.load("assets/towers/archerTower5.png").convert_alpha()
 
 archer_image = pygame.image.load("assets/archers/archer.png").convert_alpha()
 

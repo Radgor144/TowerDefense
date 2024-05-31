@@ -13,31 +13,40 @@ class LevelManager:
     def load_levels(self):
         self.level_configs = [
             {   # 1 poziom
-                "orc_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 500}),
-                                   (0, {"route_name": "route2", "spawn_interval": 500}),
-                                   (3, {"route_name": "route3", "spawn_interval": 500})],
-
-                "wolf_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 200}),
-                                    (0, {"route_name": "route2", "spawn_interval": 200}),
-                                    (2, {"route_name": "route3", "spawn_interval": 200})],
-            },
-            {   # 2 poziom
-                "orc_spawn_data": [(0, {"route_name": "route1", "spawn_interval": 500}),
-                                   (4, {"route_name": "route2", "spawn_interval": 500}),
-                                   (4, {"route_name": "route3", "spawn_interval": 500})],
-
-                "wolf_spawn_data": [(0, {"route_name": "route1", "spawn_interval": 500}),
-                                    (2, {"route_name": "route2", "spawn_interval": 500}),
-                                    (2, {"route_name": "route3", "spawn_interval": 500})],
-            },
-            {  # 3 poziom
-                "orc_spawn_data": [(4, {"route_name": "route1", "spawn_interval": 500}),
+                "orc_spawn_data": [(5, {"route_name": "route1", "spawn_interval": 500}),
                                    (0, {"route_name": "route2", "spawn_interval": 500}),
                                    (0, {"route_name": "route3", "spawn_interval": 500})],
 
-                "wolf_spawn_data": [(2, {"route_name": "route1", "spawn_interval": 500}),
-                                    (0, {"route_name": "route2", "spawn_interval": 500}),
-                                    (0, {"route_name": "route3", "spawn_interval": 500})],
+                "wolf_spawn_data": [(0, {"route_name": "route1", "spawn_interval": 200}),
+                                    (0, {"route_name": "route2", "spawn_interval": 200}),
+                                    (0, {"route_name": "route3", "spawn_interval": 200})],
+            },
+            {   # 2 poziom
+                "orc_spawn_data": [(4, {"route_name": "route1", "spawn_interval": 500}),
+                                   (4, {"route_name": "route2", "spawn_interval": 500}),
+                                   (0, {"route_name": "route3", "spawn_interval": 500})],
+
+                "wolf_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 200}),
+                                    (1, {"route_name": "route2", "spawn_interval": 200}),
+                                    (0, {"route_name": "route3", "spawn_interval": 200})],
+            },
+            {  # 3 poziom
+                "orc_spawn_data": [(5, {"route_name": "route1", "spawn_interval": 500}),
+                                   (5, {"route_name": "route2", "spawn_interval": 500}),
+                                   (5, {"route_name": "route3", "spawn_interval": 500})],
+
+                "wolf_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 200}),
+                                    (1, {"route_name": "route2", "spawn_interval": 200}),
+                                    (1, {"route_name": "route3", "spawn_interval": 200})],
+            },
+            {  # 4 poziom
+                "orc_spawn_data": [(10, {"route_name": "route1", "spawn_interval": 500}),
+                                   (8, {"route_name": "route2", "spawn_interval": 500}),
+                                   (5, {"route_name": "route3", "spawn_interval": 500})],
+
+                "wolf_spawn_data": [(0, {"route_name": "route1", "spawn_interval": 200}),
+                                    (2, {"route_name": "route2", "spawn_interval": 200}),
+                                    (5, {"route_name": "route3", "spawn_interval": 200})],
             },
             # Dodaj więcej poziomów według potrzeb
         ]

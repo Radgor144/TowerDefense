@@ -16,7 +16,7 @@ class Archer(pygame.sprite.Sprite):
 
         # strzelanie
         self.range = 150
-        self.cooldown = 650
+        self.cooldown = 800
         self.last_shot = pygame.time.get_ticks()
         self.selected = True
 
