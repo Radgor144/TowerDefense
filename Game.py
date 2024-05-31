@@ -24,13 +24,6 @@ clock = pygame.time.Clock()
 
 
 def draw_turret_range(archer, surface):
-    """
-    Wyświetla zasięg wieży na ekranie, jeśli wieża jest zaznaczona.
-
-    Parameters:
-        archer (Archer): Obiekt archera, dla którego rysowany jest zasięg.
-        surface (pygame.Surface): Powierzchnia, na której ma być wyświetlony zasięg.
-    """
     if archer.selected:
         surface.blit(archer.range_image, archer.range_rect)
 
@@ -48,24 +41,55 @@ def load_turret_positions():
 def start_wave(is_start):
     if is_start:
         enemy_group.draw(screen)
-
         for enemy in enemy_group:
-            # Narysuj pasek HP nad jednostką
             pygame.draw.rect(screen, (0, 255, 0), enemy.hp_rect)
-
         level_manager.update(pygame.time.get_ticks())
 
 
+def upgrading_towers(event, turret_group):
+    global turret_position
+    for turret in turret_group:
+        if turret.rect.collidepoint(event.pos):
+            tower_upgrade_menu.show_menu(screen, turret.rect.topleft)
+            turret_position = turret.rect.topleft
+            break
+    else:
+        tower_upgrade_menu.hide_menu()
+
+    if tower_upgrade_menu.button_rect.collidepoint(event.pos):
+        for turret in turret_group:
+            if turret.rect.topleft == turret_position:
+                if turret.image == turret_image_lvl0 and player.gold >= 100:
+                    upgrade_tower(turret, 100, turret_image_lvl1, (5, 30), (0, 0), 0, 0)
+                elif turret.image == turret_image_lvl1 and player.gold >= 250:
+                    upgrade_tower(turret, 250, turret_image_lvl2, (5, 20), (0, 0), 25, 200)
+                elif turret.image == turret_image_lvl2 and player.gold >= 500:
+                    upgrade_tower(turret, 500, turret_image_lvl3, (5, 20), (0, 10), 25, 200)
+                elif turret.image == turret_image_lvl2 and player.gold >= 700:
+                    upgrade_tower(turret, 500, turret_image_lvl4, (5, 20), (0, 10), 25, 200)
+                break
 
 
+def upgrade_tower(turret, cost, image, archer_pos, tower_pos, range, cooldown):
+    player.gold -= cost
+    if turret in turret_archer_dict:
+        archer_group.remove(turret_archer_dict[turret])
+    turret.image = image
+    turret.new_position(*tower_pos)
+    archer = Archer(archer_image, turret.rect, archer_pos)
+    archer.range += range
+    archer.cooldown -= cooldown
+    archer_group.add(archer)
+    turret_archer_dict[turret] = archer
 
 
-
-# load images
 map_image = pygame.image.load("assets/map/mapa1.png").convert_alpha()
 turret_image_lvl0 = pygame.image.load("assets/towers/toBuild.png").convert_alpha()
 turret_image_lvl1 = pygame.image.load("assets/towers/archerTower.png").convert_alpha()
 turret_image_lvl2 = pygame.image.load("assets/towers/archerTower2.png").convert_alpha()
+turret_image_lvl3 = pygame.image.load("assets/towers/archerTower3.png").convert_alpha()
+turret_image_lvl4 = pygame.image.load("assets/towers/archerTower4.png").convert_alpha()
+
 archer_image = pygame.image.load("assets/archers/archer.png").convert_alpha()
 
 coin_image = pygame.image.load("assets/content/UI/coin_32px.png").convert_alpha()
@@ -73,69 +97,50 @@ player_heart_image = pygame.image.load("assets/content/UI/player_heart_32px.png"
 
 player = Player(coin_image, player_heart_image)
 
-# load json data for level
 with open("assets/map/trasa1..tmj") as file:
     map_data = json.load(file)
 
-# create map
 mapa = Mapa(map_data, map_image)
 mapa.proccess_data()
 
-# create groups
 enemy_group = pygame.sprite.Group()
 turret_group = pygame.sprite.Group()
 archer_group = pygame.sprite.Group()
 
-# load turret positions
 load_turret_positions()
 
-# tworzenie przycisku menu nad wieza
 tower_upgrade_menu = TowerUpgradeMenu()
 
-# tworzenie przycisku startu levela
 Start_wave_button = Start_wave_button()
 
 # Dictionary to store archers for each turret
 turret_archer_dict = {}
 
-# Initialize level manager
 level_manager = LevelManager(enemy_group, mapa)
 
-
-# game loop
 window_open = True
 IsStart = False
 while window_open:
-
     screen.fill("grey100")
-
-    # draw level
     mapa.draw(screen)
-
-    # draw coin
     player.draw(screen)
 
-    # draw enemy paths
     pygame.draw.lines(screen, "grey0", False, mapa.route1)
     pygame.draw.lines(screen, "grey0", False, mapa.route2)
     pygame.draw.lines(screen, "grey0", False, mapa.route3)
 
-    # draw start wave button
     if level_manager.current_level_index < len(level_manager.levels):
         Start_wave_button.update(screen, level_manager.level_configs, level_manager.current_level_index)
 
-    # update groups
     enemy_group.update(player)
     archer_group.update(enemy_group)
-
-    # draw turrets
     turret_group.draw(screen)
 
     start_wave(IsStart)
 
     for archer in archer_group:
-        archer.draw(screen)  # Rysuje archerów
-        draw_turret_range(archer, screen)  # Rysuje zasięg dla archerów, jeśli są zaznaczone
+        archer.draw(screen)
+        draw_turret_range(archer, screen)
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -143,7 +148,6 @@ while window_open:
                 window_open = False
 
         if event.type == pygame.MOUSEMOTION:
-            # Sprawdzamy, czy myszka jest nad wieżą i ustawiamy flagę selected
             for archer in archer_group:
                 if archer.rect.collidepoint(event.pos):
                     archer.selected = True
@@ -151,47 +155,18 @@ while window_open:
                     archer.selected = False
 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            for turret in turret_group:
-                if turret.rect.collidepoint(event.pos):
-                    # Jeśli kliknięto na wieżę, otwórz menu ulepszeń
-                    tower_upgrade_menu.show_menu(screen, turret.rect.topleft)
-                    turret_position = turret.rect.topleft
-                    break
-            else:
-                # Ukryj menu ulepszeń, jeśli kliknięto gdzieś indziej
-                tower_upgrade_menu.hide_menu()
+            upgrading_towers(event, turret_group)
 
-            if tower_upgrade_menu.button_rect.collidepoint(event.pos):
-                for turret in turret_group:
-                    if turret.rect.topleft == turret_position:
-                        # Jeśli kliknięto na przycisk ulepszenia, aktualizuj wieżę
-                        if turret.image == turret_image_lvl0 and player.gold >= 100:
-                            player.gold -= 100
-                            turret.image = turret_image_lvl1  # Zaktualizuj obrazek wieży do lvl1
-                            archer = Archer(archer_image, turret.rect, (5, 30))
-                            archer_group.add(archer)
-                            turret_archer_dict[turret] = archer  # Store archer reference for turret
-                        elif turret.image == turret_image_lvl1 and player.gold >= 250:
-                            player.gold -= 250
-                            # Remove previous archer
-                            if turret in turret_archer_dict:
-                                archer_group.remove(turret_archer_dict[turret])
-                            turret.image = turret_image_lvl2  # Zaktualizuj obrazek wieży do lvl2
-                            archer = Archer(archer_image, turret.rect, (5, 20))
-                            archer_group.add(archer)
-                            turret_archer_dict[turret] = archer  # Store archer reference for turret
-                        break
             if (Start_wave_button.red_button_rect1.collidepoint(event.pos) or
                     Start_wave_button.red_button_rect2.collidepoint(event.pos) or
                     Start_wave_button.red_button_rect3.collidepoint(event.pos)):
                 IsStart = True
-                Start_wave_button.hide_buttons()  # Ukryj wszystkie przyciski
+                Start_wave_button.hide_buttons()
                 level_manager.start_next_level()
 
         if event.type == pygame.QUIT:
             window_open = False
 
-    # Aktualizuj menu
     tower_upgrade_menu.update(screen)
 
     clock.tick(FPS)

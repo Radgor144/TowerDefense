@@ -1,5 +1,7 @@
 import math
 import pygame
+
+
 class Archer(pygame.sprite.Sprite):
     def __init__(self, image, tower_rect, position):
         super().__init__()
@@ -18,15 +20,6 @@ class Archer(pygame.sprite.Sprite):
         self.last_shot = pygame.time.get_ticks()
         self.selected = True
 
-        # rysowanie zasiegu
-        self.range_image = pygame.Surface((self.range * 2, self.range * 2))
-        self.range_image.fill((0,0,0))
-        self.range_image.set_colorkey((0,0,0))
-        pygame.draw.circle(self.range_image, "grey20", (self.range, self.range), self.range)
-        self.range_image.set_alpha(100)
-        self.range_rect = self.range_image.get_rect()
-        self.range_rect.center = self.rect.center[0], self.rect.center[1] + 10
-
     def draw(self, surface):
         surface.blit(self.image, self.rect)
         if self.selected:
@@ -43,4 +36,11 @@ class Archer(pygame.sprite.Sprite):
                     self.last_shot = pygame.time.get_ticks()  # Zaktualizuj czas ostatniego strzału
                     break
 
-
+        # rysowanie zasiegu
+        self.range_image = pygame.Surface((self.range * 2, self.range * 2))
+        self.range_image.fill((0, 0, 0))
+        self.range_image.set_colorkey((0, 0, 0))
+        pygame.draw.circle(self.range_image, "grey20", (self.range, self.range), self.range)
+        self.range_image.set_alpha(100)
+        self.range_rect = self.range_image.get_rect()
+        self.range_rect.center = self.rect.center[0], self.rect.center[1] + 10

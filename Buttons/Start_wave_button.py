@@ -36,7 +36,6 @@ class Start_wave_button:
         self.is_button_shown1 = False
         self.is_button_shown2 = False
         self.is_button_shown3 = False
-        print("x")
 
     def update(self, screen, level_configs, current_level_index):
         config = level_configs[current_level_index]
