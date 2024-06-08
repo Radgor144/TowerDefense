@@ -1,3 +1,5 @@
+import pygame
+
 from levels.Level import Level
 
 
@@ -9,6 +11,8 @@ class LevelManager:
         self.current_level_index = 0
         self.levels = []
         self.load_levels()
+
+
 
     def load_levels(self):
         self.level_configs = [
@@ -76,14 +80,7 @@ class LevelManager:
         if self.current_level_index < len(self.levels):
             self.current_level = self.levels[self.current_level_index]
             self.current_level_index += 1
-        else:
-            self.current_level = None  # No more levels
 
     def update(self, current_time):
         if self.current_level:
             self.current_level.update(current_time)
-
-    def is_level_finished(self):
-        if self.current_level:
-            return self.current_level.is_level_finished()
-        return True

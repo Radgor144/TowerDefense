@@ -70,7 +70,7 @@ def upgrading_towers(event, turret_group):
                 elif turret.image == turret_image_lvl3 and player.gold >= 700:
                     upgrade_tower(turret, 700, 900, turret_image_lvl4, (5, 42), (0, 23), 75, 500)
                 elif turret.image == turret_image_lvl4 and player.gold >= 900:
-                    upgrade_tower(turret, 900, 900, turret_image_lvl5, (5, 42), (0, 0), 100, 500)
+                    upgrade_tower(turret, 900, 900, turret_image_lvl5, (5, 42), (0, 0), 100, 400)
                 break
 
 
@@ -88,11 +88,46 @@ def upgrade_tower(turret, cost, upgrade_cost, image, archer_pos, tower_pos, rang
     archer_group.add(archer)
     turret_archer_dict[turret] = archer
 
+def show_welcome_screen():
+    welcome_image = screen.fill("grey100")
+    # welcome_rect = welcome_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+
+    start_button_image = pygame.image.load("assets/content/UI/Button_Hover_3Slides.png").convert_alpha()
+    start_button_rect = start_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
+
+    # Utworzenie przezroczystego Surface z trybem alfa
+    transparent_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+    transparent_surface.fill((0, 0, 0, 128))  # Czarny z przezroczystością 50%
+
+    while True:
+        screen.fill((0, 0, 0))
+        mapa.draw(screen)
+        turret_group.draw(screen)
+        screen.blit(transparent_surface, (0, 0))
+        screen.blit(start_button_image, start_button_rect)
+
+        font = pygame.font.Font(None, 28)
+        text_surface = font.render(str("Rozpocznij grę"), True, (255, 255, 255))
+        text_position = (start_button_rect.x + 25, start_button_rect.y + 15)
+        screen.blit(text_surface, text_position)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if start_button_rect.collidepoint(event.pos):
+                    return  # Exit the welcome screen loop and start the game
+
+        pygame.display.flip()
+        clock.tick(FPS)
+
 
 # load music
 wave_incoming_sound = pygame.mixer.Sound("assets/music/Wave Incoming.mp3")
 tower_upgrade_sound = pygame.mixer.Sound("assets/music/tower upgrade.mp3")
 tower_upgrade_sound.set_volume(0.5)
+
 
 # load images
 map_image = pygame.image.load("assets/map/mapa1.png").convert_alpha()
@@ -131,10 +166,11 @@ turret_archer_dict = {}
 
 level_manager = LevelManager(enemy_group, mapa)
 
+show_welcome_screen()
+
 window_open = True
 IsStart = False
 while window_open:
-    screen.fill("grey100")
     mapa.draw(screen)
     player.draw(screen)
 

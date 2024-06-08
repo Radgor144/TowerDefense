@@ -25,11 +25,6 @@ class TowerUpgradeMenu:
     def hide_menu(self):
         self.is_menu_shown = False
 
-    def handle_click(self, click_pos):
-        if self.menu_rect.collidepoint(click_pos):
-            # Kliknięto w obszar menu, możesz obsłużyć to tutaj
-            pass
-
     def update(self, surface):
         # Sprawdź, czy menu powinno być wyświetlane
         if self.is_menu_shown:
@@ -43,7 +38,3 @@ class TowerUpgradeMenu:
             text_position = (self.menu_rect.x + 15, self.menu_rect.y + 15)
             surface.blit(text_surface, text_position)
 
-    def update_tower(self, surface, tower_position, turret_lvl):
-        print("XXX")
-        x, y = tower_position
-        surface.blit(turret_lvl, (x, y))

@@ -2,10 +2,16 @@ import pygame
 from enemies.Orc import Orc
 from enemies.Wolf import Wolf
 
+
 class Level:
+
+
     def __init__(self, level_data, enemy_group, mapa):
         self.enemy_group = enemy_group
         self.mapa = mapa
+
+        self.victory_wave_sound = pygame.mixer.Sound("assets/music/victory.mp3")
+        self.victory_wave_sound.set_volume(0.1)
 
         self.orc_spawn_data = level_data.get("orc_spawn_data", [])
         self.wolf_spawn_data = level_data.get("wolf_spawn_data", [])
@@ -28,6 +34,8 @@ class Level:
         self.wolf_spawn_timer_on_route2 = 0
         self.wolf_spawn_timer_on_route3 = 0
 
+        self.victory_played = False
+
         # Load images
         self.orc_image = pygame.image.load("assets/orc/orc1.png").convert_alpha()
         self.wolf_image = pygame.image.load("assets/wolf/wolf1.png").convert_alpha()
@@ -37,7 +45,7 @@ class Level:
             amount, route = spawn_data
 
             # Wybierz odpowiednie zmienne do śledzenia ilości zespawnowanych przeciwników i timera spawnu
-            spawn_var_name = f"orc_spawned_on_{route['route_name']}"    # dynamiczna zmiana nazwy zmiennej
+            spawn_var_name = f"orc_spawned_on_{route['route_name']}"  # dynamiczna zmiana nazwy zmiennej
             timer_var_name = f"orc_spawn_timer_on_{route['route_name']}"
 
             if getattr(self, spawn_var_name) < amount:
@@ -63,5 +71,7 @@ class Level:
                     setattr(self, spawn_var_name, getattr(self, spawn_var_name) + 1)
                     setattr(self, timer_var_name, current_time)
 
-    def is_level_finished(self):
-        return len(self.enemy_group) == 0
+        if len(self.enemy_group) == 0 and not self.victory_played:
+            self.victory_wave_sound.play()
+            self.victory_played = True
+

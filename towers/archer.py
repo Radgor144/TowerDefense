@@ -35,7 +35,6 @@ class Archer(pygame.sprite.Sprite):
                     enemy.health_point -= 34
                     self.last_shot = pygame.time.get_ticks()  # Zaktualizuj czas ostatniego strzału
                     break
-
         # rysowanie zasiegu
         self.range_image = pygame.Surface((self.range * 2, self.range * 2))
         self.range_image.fill((0, 0, 0))

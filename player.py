@@ -4,7 +4,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self, coin_image, heart_image):
         super().__init__()
-        self.gold = 3500
+        self.gold = 350
         self.coin_image = coin_image
         self.coin_rect = self.coin_image.get_rect()
 
