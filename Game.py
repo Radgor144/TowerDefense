@@ -18,6 +18,8 @@ SCREEN_WIDTH = TILE_SIZE * COLS
 SCREEN_HEIGHT = TILE_SIZE * ROWS
 
 pygame.init()
+pygame.mixer.init()
+
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tower Defense")
 clock = pygame.time.Clock()
@@ -74,6 +76,7 @@ def upgrading_towers(event, turret_group):
 
 def upgrade_tower(turret, cost, image, archer_pos, tower_pos, range, cooldown):
     player.gold -= cost
+    tower_upgrade_sound.play()
     if turret in turret_archer_dict:
         archer_group.remove(turret_archer_dict[turret])
     turret.image = image
@@ -85,6 +88,13 @@ def upgrade_tower(turret, cost, image, archer_pos, tower_pos, range, cooldown):
     turret_archer_dict[turret] = archer
 
 
+# load music
+wave_incoming_sound = pygame.mixer.Sound("assets/music/Wave Incoming.mp3")
+tower_upgrade_sound = pygame.mixer.Sound("assets/music/tower upgrade.mp3")
+tower_upgrade_sound.set_volume(0.5)
+
+
+# load images
 map_image = pygame.image.load("assets/map/mapa1.png").convert_alpha()
 turret_image_lvl0 = pygame.image.load("assets/towers/toBuild.png").convert_alpha()
 turret_image_lvl1 = pygame.image.load("assets/towers/archerTower.png").convert_alpha()
@@ -166,6 +176,7 @@ while window_open:
                 IsStart = True
                 Start_wave_button.hide_buttons()
                 level_manager.start_next_level()
+                wave_incoming_sound.play()
 
         if event.type == pygame.QUIT:
             window_open = False

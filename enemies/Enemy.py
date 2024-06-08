@@ -3,7 +3,6 @@ from pygame.math import Vector2
 import math
 
 
-
 class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, waypoints, image):
@@ -17,6 +16,13 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = self.position
 
+        #load music
+        self.lose_hp_sound = pygame.mixer.Sound("assets/music/lose Hp.mp3")
+        self.enemy_death_sound = pygame.mixer.Sound("assets/music/enemy Death.mp3")
+
+        #modify music
+        self.enemy_death_sound.set_volume(0.05)
+
         # Pasek zdrowia
         self.hp_rect = pygame.Rect(0, 0, 20, 5)  # początkowe ustawienia prostokąta paska HP
 
@@ -28,6 +34,7 @@ class Enemy(pygame.sprite.Sprite):
         self.move(player)
         self.rotate()
         self.hp_position()  # Aktualizuj pozycję paska HP
+
 
         # Aktualizuj pasek HP
         self.update_health_bar(player)
@@ -52,6 +59,7 @@ class Enemy(pygame.sprite.Sprite):
         self.hp_rect.width = max(health_width, 0)  # Szerokość paska HP nie może być mniejsza niż 0
         if self.health_point <= 0:
             self.kill()
+            self.enemy_death_sound.play()
             if isinstance(self, Orc):
                 player.gold += self.gold_for_kill
             elif isinstance(self, Wolf):
@@ -67,6 +75,7 @@ class Enemy(pygame.sprite.Sprite):
             self.kill()
             player.health_points -= 1
             player.gold -= 50
+            self.lose_hp_sound.play()
 
         # calculate distance to target
         distance = self.movement.length()
