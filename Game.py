@@ -52,7 +52,7 @@ def upgrading_towers(event, turret_group):
     global turret_position
     for turret in turret_group:
         if turret.rect.collidepoint(event.pos):
-            tower_upgrade_menu.show_menu(screen, turret.rect.topleft)
+            tower_upgrade_menu.show_menu(screen, turret.rect.topleft, turret.cost)
             turret_position = turret.rect.topleft
             break
     else:
@@ -62,25 +62,26 @@ def upgrading_towers(event, turret_group):
         for turret in turret_group:
             if turret.rect.topleft == turret_position:
                 if turret.image == turret_image_lvl0 and player.gold >= 100:
-                    upgrade_tower(turret, 100, turret_image_lvl1, (5, 30), (0, 0), 0, 800)
+                    upgrade_tower(turret, 100, 250, turret_image_lvl1, (5, 30), (0, 0), 0, 800)
                 elif turret.image == turret_image_lvl1 and player.gold >= 250:
-                    upgrade_tower(turret, 250, turret_image_lvl2, (5, 20), (0, 0), 25, 700)
+                    upgrade_tower(turret, 250, 500, turret_image_lvl2, (5, 20), (0, 0), 25, 700)
                 elif turret.image == turret_image_lvl2 and player.gold >= 500:
-                    upgrade_tower(turret, 500, turret_image_lvl3, (5, 20), (0, 10), 50, 600)
+                    upgrade_tower(turret, 500, 700, turret_image_lvl3, (5, 20), (0, 10), 50, 600)
                 elif turret.image == turret_image_lvl3 and player.gold >= 700:
-                    upgrade_tower(turret, 700, turret_image_lvl4, (5, 42), (0, 23), 75, 500)
+                    upgrade_tower(turret, 700, 900, turret_image_lvl4, (5, 42), (0, 23), 75, 500)
                 elif turret.image == turret_image_lvl4 and player.gold >= 900:
-                    upgrade_tower(turret, 900, turret_image_lvl5, (5, 42), (0, 0), 100, 500)
+                    upgrade_tower(turret, 900, 900, turret_image_lvl5, (5, 42), (0, 0), 100, 500)
                 break
 
 
-def upgrade_tower(turret, cost, image, archer_pos, tower_pos, range, cooldown):
+def upgrade_tower(turret, cost, upgrade_cost, image, archer_pos, tower_pos, range, cooldown):
     player.gold -= cost
     tower_upgrade_sound.play()
     if turret in turret_archer_dict:
         archer_group.remove(turret_archer_dict[turret])
     turret.image = image
     turret.new_position(*tower_pos)
+    turret.cost = upgrade_cost
     archer = Archer(archer_image, turret.rect, archer_pos)
     archer.range += range
     archer.cooldown = cooldown
@@ -92,7 +93,6 @@ def upgrade_tower(turret, cost, image, archer_pos, tower_pos, range, cooldown):
 wave_incoming_sound = pygame.mixer.Sound("assets/music/Wave Incoming.mp3")
 tower_upgrade_sound = pygame.mixer.Sound("assets/music/tower upgrade.mp3")
 tower_upgrade_sound.set_volume(0.5)
-
 
 # load images
 map_image = pygame.image.load("assets/map/mapa1.png").convert_alpha()

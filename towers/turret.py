@@ -7,6 +7,7 @@ class Turret(pygame.sprite.Sprite):
         super().__init__()
         self.image = image
         self.rect = self.image.get_rect()
+        self.cost = 100
 
     def draw(self, position, surface):
         x, y = map(int, position.split(' '))
