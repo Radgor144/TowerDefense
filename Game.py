@@ -162,6 +162,44 @@ def show_game_over_screen():
         clock.tick(FPS)
 
 
+def show_victory_screen():
+    start_button_image = pygame.image.load("assets/content/UI/Ribbon_Blue_3Slides.png").convert_alpha()
+    start_button_rect = start_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
+
+    # Utworzenie przezroczystego Surface z trybem alfa
+    transparent_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+    transparent_surface.fill((0, 0, 0, 128))  # Czarny z przezroczystością 50%
+
+    while True:
+        # Zaktualizuj ekran gry przed nałożeniem przezroczystego tła
+        mapa.draw(screen)
+        player.draw(screen)
+        enemy_group.draw(screen)
+        turret_group.draw(screen)
+        for archer in archer_group:
+            archer.draw(screen)
+            draw_turret_range(archer, screen)
+        pygame.draw.lines(screen, "grey0", False, mapa.route1)
+        pygame.draw.lines(screen, "grey0", False, mapa.route2)
+        pygame.draw.lines(screen, "grey0", False, mapa.route3)
+
+        screen.blit(transparent_surface, (0, 0))
+        screen.blit(start_button_image, start_button_rect)
+
+        font = pygame.font.Font(None, 28)
+        text_surface = font.render("Wygrana", True, (255, 255, 255))
+        text_position = (start_button_rect.x + 55, start_button_rect.y + 15)
+        screen.blit(text_surface, text_position)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+        pygame.display.flip()
+        clock.tick(FPS)
+
+
 # load music
 wave_incoming_sound = pygame.mixer.Sound("assets/music/Wave Incoming.mp3")
 tower_upgrade_sound = pygame.mixer.Sound("assets/music/tower upgrade.mp3")
@@ -260,6 +298,9 @@ while window_open:
     if player.health_points <= 0:
         show_game_over_screen()
         window_open = False
+
+    if level_manager.victory:
+        show_victory_screen()
 
     clock.tick(FPS)
     pygame.display.flip()

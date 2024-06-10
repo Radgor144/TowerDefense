@@ -5,7 +5,6 @@ from enemies.Wolf import Wolf
 
 class Level:
 
-
     def __init__(self, level_data, enemy_group, mapa):
         self.enemy_group = enemy_group
         self.mapa = mapa
@@ -74,4 +73,3 @@ class Level:
         if len(self.enemy_group) == 0 and not self.victory_played:
             self.victory_wave_sound.play()
             self.victory_played = True
-

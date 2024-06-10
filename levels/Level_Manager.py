@@ -5,6 +5,7 @@ from levels.Level import Level
 
 class LevelManager:
     def __init__(self, enemy_group, mapa):
+        self.victory = False
         self.level_configs = None
         self.enemy_group = enemy_group
         self.mapa = mapa
@@ -12,11 +13,9 @@ class LevelManager:
         self.levels = []
         self.load_levels()
 
-
-
     def load_levels(self):
         self.level_configs = [
-            {   # 1 poziom
+            {  # 1 poziom
                 "orc_spawn_data": [(5, {"route_name": "route1", "spawn_interval": 400}),
                                    (0, {"route_name": "route2", "spawn_interval": 400}),
                                    (0, {"route_name": "route3", "spawn_interval": 400})],
@@ -84,3 +83,5 @@ class LevelManager:
     def update(self, current_time):
         if self.current_level:
             self.current_level.update(current_time)
+            if self.current_level_index == len(self.levels) and len(self.enemy_group) == 0:
+                self.victory = True
