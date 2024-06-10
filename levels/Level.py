@@ -1,10 +1,11 @@
 import pygame
 from enemies.Orc import Orc
 from enemies.Wolf import Wolf
+from enemies.Minotaur import Minotaur
+from enemies.Dirt_golem import Dirt_golem
 
 
 class Level:
-
     def __init__(self, level_data, enemy_group, mapa):
         self.enemy_group = enemy_group
         self.mapa = mapa
@@ -12,63 +13,53 @@ class Level:
         self.victory_wave_sound = pygame.mixer.Sound("assets/music/victory.mp3")
         self.victory_wave_sound.set_volume(0.1)
 
-        self.orc_spawn_data = level_data.get("orc_spawn_data", [])
-        self.wolf_spawn_data = level_data.get("wolf_spawn_data", [])
-
-        # Dodanie zmiennych do śledzenia zespawnowanych przeciwników dla każdego typu i trasy
-        self.orc_spawned_on_route1 = 0
-        self.orc_spawned_on_route2 = 0
-        self.orc_spawned_on_route3 = 0
-
-        self.wolf_spawned_on_route1 = 0
-        self.wolf_spawned_on_route2 = 0
-        self.wolf_spawned_on_route3 = 0
-
-        # Dodanie zmiennych timera spawnu dla każdej trasy i każdego typu przeciwnika
-        self.orc_spawn_timer_on_route1 = 0
-        self.orc_spawn_timer_on_route2 = 0
-        self.orc_spawn_timer_on_route3 = 0
-
-        self.wolf_spawn_timer_on_route1 = 0
-        self.wolf_spawn_timer_on_route2 = 0
-        self.wolf_spawn_timer_on_route3 = 0
+        self.spawn_data = {
+            "orc": {
+                "data": level_data.get("orc_spawn_data", []),
+                "image": pygame.image.load("assets/orc/orc1.png").convert_alpha(),
+                "class": Orc,
+                "spawned": {"route1": 0, "route2": 0, "route3": 0},
+                "timers": {"route1": 0, "route2": 0, "route3": 0},
+            },
+            "wolf": {
+                "data": level_data.get("wolf_spawn_data", []),
+                "image": pygame.image.load("assets/wolf/wolf1.png").convert_alpha(),
+                "class": Wolf,
+                "spawned": {"route1": 0, "route2": 0, "route3": 0},
+                "timers": {"route1": 0, "route2": 0, "route3": 0},
+            },
+            "minotaur": {
+                "data": level_data.get("minotaur_spawn_data", []),
+                "image": pygame.image.load("assets/minotaur/minotaur2.png").convert_alpha(),
+                "class": Minotaur,
+                "spawned": {"route1": 0, "route2": 0, "route3": 0},
+                "timers": {"route1": 0, "route2": 0, "route3": 0},
+            },
+            "dirt_golem": {
+                "data": level_data.get("dirt_golem_spawn_data", []),
+                "image": pygame.image.load("assets/dirt golem/dirt_golem.png").convert_alpha(),
+                "class": Dirt_golem,
+                "spawned": {"route1": 0, "route2": 0, "route3": 0},
+                "timers": {"route1": 0, "route2": 0, "route3": 0},
+            },
+        }
 
         self.victory_played = False
 
-        # Load images
-        self.orc_image = pygame.image.load("assets/orc/orc1.png").convert_alpha()
-        self.wolf_image = pygame.image.load("assets/wolf/wolf1.png").convert_alpha()
-
     def update(self, current_time):
-        for spawn_data in self.orc_spawn_data:
-            amount, route = spawn_data
+        for enemy_type, enemy_info in self.spawn_data.items():
+            for amount, route in enemy_info["data"]:
+                route_name = route["route_name"]
+                spawn_var = enemy_info["spawned"]
+                timer_var = enemy_info["timers"]
 
-            # Wybierz odpowiednie zmienne do śledzenia ilości zespawnowanych przeciwników i timera spawnu
-            spawn_var_name = f"orc_spawned_on_{route['route_name']}"  # dynamiczna zmiana nazwy zmiennej
-            timer_var_name = f"orc_spawn_timer_on_{route['route_name']}"
-
-            if getattr(self, spawn_var_name) < amount:
-                if current_time - getattr(self, timer_var_name) >= route["spawn_interval"]:
-                    waypoints = getattr(self.mapa, route["route_name"])
-                    new_orc = Orc(waypoints, self.orc_image)
-                    self.enemy_group.add(new_orc)
-                    setattr(self, spawn_var_name, getattr(self, spawn_var_name) + 1)
-                    setattr(self, timer_var_name, current_time)
-
-        for spawn_data in self.wolf_spawn_data:
-            amount, route = spawn_data
-
-            # Analogicznie do orków, ale dla wilków
-            spawn_var_name = f"wolf_spawned_on_{route['route_name']}"
-            timer_var_name = f"wolf_spawn_timer_on_{route['route_name']}"
-
-            if getattr(self, spawn_var_name) < amount:
-                if current_time - getattr(self, timer_var_name) >= route["spawn_interval"]:
-                    waypoints = getattr(self.mapa, route["route_name"])
-                    new_wolf = Wolf(waypoints, self.wolf_image)
-                    self.enemy_group.add(new_wolf)
-                    setattr(self, spawn_var_name, getattr(self, spawn_var_name) + 1)
-                    setattr(self, timer_var_name, current_time)
+                if spawn_var[route_name] < amount:
+                    if current_time - timer_var[route_name] >= route["spawn_interval"]:
+                        waypoints = getattr(self.mapa, route_name)
+                        new_enemy = enemy_info["class"](waypoints, enemy_info["image"])
+                        self.enemy_group.add(new_enemy)
+                        spawn_var[route_name] += 1
+                        timer_var[route_name] = current_time
 
         if len(self.enemy_group) == 0 and not self.victory_played:
             self.victory_wave_sound.play()
