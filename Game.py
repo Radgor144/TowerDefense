@@ -138,16 +138,13 @@ def show_game_over_screen():
         for archer in archer_group:
             archer.draw(screen)
             draw_turret_range(archer, screen)
-        pygame.draw.lines(screen, "grey0", False, mapa.route1)
-        pygame.draw.lines(screen, "grey0", False, mapa.route2)
-        pygame.draw.lines(screen, "grey0", False, mapa.route3)
 
         screen.blit(transparent_surface, (0, 0))
         screen.blit(start_button_image, start_button_rect)
 
         font = pygame.font.Font(None, 28)
         text_surface = font.render("Przegrana", True, (255, 255, 255))
-        text_position = (start_button_rect.x + 40, start_button_rect.y + 15)
+        text_position = (start_button_rect.x + 50, start_button_rect.y + 15)
         screen.blit(text_surface, text_position)
 
         for event in pygame.event.get():
@@ -179,9 +176,6 @@ def show_victory_screen():
         for archer in archer_group:
             archer.draw(screen)
             draw_turret_range(archer, screen)
-        pygame.draw.lines(screen, "grey0", False, mapa.route1)
-        pygame.draw.lines(screen, "grey0", False, mapa.route2)
-        pygame.draw.lines(screen, "grey0", False, mapa.route3)
 
         screen.blit(transparent_surface, (0, 0))
         screen.blit(start_button_image, start_button_rect)
