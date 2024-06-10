@@ -31,8 +31,8 @@ def draw_turret_range(archer, surface):
 
 
 def load_turret_positions():
-    with open("turretPosition.txt", "r") as file:
-        turret_position = file.read().split("\n")
+    with open("turretPosition.txt", "r") as turret_pos_file:
+        turret_position = turret_pos_file.read().split("\n")
         for pos in turret_position:
             x, y = map(int, pos.split(' '))
             turret = Turret(turret_image_lvl0)
@@ -88,10 +88,8 @@ def upgrade_tower(turret, cost, upgrade_cost, image, archer_pos, tower_pos, rang
     archer_group.add(archer)
     turret_archer_dict[turret] = archer
 
-def show_welcome_screen():
-    welcome_image = screen.fill("grey100")
-    # welcome_rect = welcome_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
 
+def show_welcome_screen():
     start_button_image = pygame.image.load("assets/content/UI/Button_Hover_3Slides.png").convert_alpha()
     start_button_rect = start_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
 
@@ -123,11 +121,51 @@ def show_welcome_screen():
         clock.tick(FPS)
 
 
+def show_game_over_screen():
+    start_button_image = pygame.image.load("assets/content/UI/Button_Red_3Slides.png").convert_alpha()
+    start_button_rect = start_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
+
+    # Utworzenie przezroczystego Surface z trybem alfa
+    transparent_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
+    transparent_surface.fill((0, 0, 0, 128))  # Czarny z przezroczystością 50%
+
+    while True:
+        # Zaktualizuj ekran gry przed nałożeniem przezroczystego tła
+        mapa.draw(screen)
+        player.draw(screen)
+        enemy_group.draw(screen)
+        turret_group.draw(screen)
+        for archer in archer_group:
+            archer.draw(screen)
+            draw_turret_range(archer, screen)
+        pygame.draw.lines(screen, "grey0", False, mapa.route1)
+        pygame.draw.lines(screen, "grey0", False, mapa.route2)
+        pygame.draw.lines(screen, "grey0", False, mapa.route3)
+
+        screen.blit(transparent_surface, (0, 0))
+        screen.blit(start_button_image, start_button_rect)
+
+        font = pygame.font.Font(None, 28)
+        text_surface = font.render("Przegrana", True, (255, 255, 255))
+        text_position = (start_button_rect.x + 40, start_button_rect.y + 15)
+        screen.blit(text_surface, text_position)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if start_button_rect.collidepoint(event.pos):
+                    return  # Exit the game over screen loop and restart the game
+
+        pygame.display.flip()
+        clock.tick(FPS)
+
+
 # load music
 wave_incoming_sound = pygame.mixer.Sound("assets/music/Wave Incoming.mp3")
 tower_upgrade_sound = pygame.mixer.Sound("assets/music/tower upgrade.mp3")
 tower_upgrade_sound.set_volume(0.5)
-
 
 # load images
 map_image = pygame.image.load("assets/map/mapa1.png").convert_alpha()
@@ -218,6 +256,10 @@ while window_open:
             window_open = False
 
     tower_upgrade_menu.update(screen)
+
+    if player.health_points <= 0:
+        show_game_over_screen()
+        window_open = False
 
     clock.tick(FPS)
     pygame.display.flip()

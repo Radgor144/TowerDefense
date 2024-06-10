@@ -6,7 +6,7 @@ class Wolf(Enemy):
     def __init__(self, waypoints, image):
         super().__init__(waypoints, image)
         self.speed = 3
-        self.gold_for_kill = 50
+        self.gold_for_kill = 35
 
         # zdrowie jednostki
         self.health_point = 50  # zdrowie jednostki
