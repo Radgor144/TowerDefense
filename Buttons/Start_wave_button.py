@@ -40,33 +40,13 @@ class Start_wave_button:
     def update(self, screen, level_configs, current_level_index):
         config = level_configs[current_level_index]
 
-        orc_spawn_data = config.get("orc_spawn_data", [])
-        wolf_spawn_data = config.get("wolf_spawn_data", [])
+        mobs_to_check = ["orc", "wolf", "minotaur", "dirt_golem"]  # Lista mobów do sprawdzenia
 
-        for spawn_data in orc_spawn_data:
-            amount, route = spawn_data
-            is_orc_coming = route['route_name']
-
-            if is_orc_coming == "route1" and amount > 0:
-                self.is_button_shown1 = True
-
-            if is_orc_coming == "route2" and amount > 0:
-                self.is_button_shown2 = True
-
-            if is_orc_coming == "route3" and amount > 0:
-                self.is_button_shown3 = True
-
-        for spawn_data in wolf_spawn_data:
-            amount, route = spawn_data
-            is_wolf_coming = route['route_name']
-
-            if is_wolf_coming == "route1" and amount > 0:
-                self.is_button_shown1 = True
-
-            if is_wolf_coming == "route2" and amount > 0:
-                self.is_button_shown2 = True
-
-            if is_wolf_coming == "route3" and amount > 0:
-                self.is_button_shown3 = True
+        for i in range(1, 4):  # Iteracja po trasach
+            for mob in mobs_to_check:  # Iteracja po mobach
+                spawn_data = config.get(f"{mob}_spawn_data", [])
+                if any(amount > 0 for amount, route in spawn_data if route['route_name'] == f"route{i}"):
+                    setattr(self, f"is_button_shown{i}", True)  # Ustawienie flagi pokazania przycisku dla danej trasy
 
         self.show_button(screen)
+

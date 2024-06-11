@@ -42,9 +42,9 @@ class LevelManager:
                                           (0, {"route_name": "route3", "spawn_interval": 200})],
             },
             {  # 4 poziom
-                "orc_spawn_data": [(7, {"route_name": "route1", "spawn_interval": 400}),
-                                   (5, {"route_name": "route2", "spawn_interval": 400}),
-                                   (7, {"route_name": "route3", "spawn_interval": 400})],
+                "orc_spawn_data": [(5, {"route_name": "route1", "spawn_interval": 400}),
+                                   (4, {"route_name": "route2", "spawn_interval": 400}),
+                                   (4, {"route_name": "route3", "spawn_interval": 400})],
 
                 "wolf_spawn_data": [(0, {"route_name": "route1", "spawn_interval": 200}),
                                     (2, {"route_name": "route2", "spawn_interval": 200}),
@@ -68,13 +68,13 @@ class LevelManager:
                                           (3, {"route_name": "route3", "spawn_interval": 200})],
             },
             {  # 6 poziom
-                "orc_spawn_data": [(10, {"route_name": "route1", "spawn_interval": 300}),
-                                   (10, {"route_name": "route2", "spawn_interval": 300}),
-                                   (10, {"route_name": "route3", "spawn_interval": 300})],
+                "orc_spawn_data": [(7, {"route_name": "route1", "spawn_interval": 300}),
+                                   (7, {"route_name": "route2", "spawn_interval": 300}),
+                                   (7, {"route_name": "route3", "spawn_interval": 300})],
 
                 "wolf_spawn_data": [(5, {"route_name": "route1", "spawn_interval": 150}),
                                     (2, {"route_name": "route2", "spawn_interval": 150}),
-                                    (7, {"route_name": "route3", "spawn_interval": 150})],
+                                    (3, {"route_name": "route3", "spawn_interval": 150})],
 
                 "dirt_golem_spawn_data": [(2, {"route_name": "route1", "spawn_interval": 200}),
                                           (2, {"route_name": "route2", "spawn_interval": 200}),

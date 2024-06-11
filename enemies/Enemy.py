@@ -2,7 +2,6 @@ import pygame
 from pygame.math import Vector2
 import math
 
-
 class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, waypoints, image):
@@ -54,6 +53,8 @@ class Enemy(pygame.sprite.Sprite):
     def update_health_bar(self, player):
         from .Orc import Orc
         from .Wolf import Wolf
+        from .Dirt_golem import Dirt_golem
+        from .Minotaur import Minotaur
         # Oblicz szerokość paska HP proporcjonalnie do aktualnego zdrowia
         health_width = int((self.health_point / self.max_health) * 20)
         self.hp_rect.width = max(health_width, 0)  # Szerokość paska HP nie może być mniejsza niż 0
@@ -63,6 +64,10 @@ class Enemy(pygame.sprite.Sprite):
             if isinstance(self, Orc):
                 player.gold += self.gold_for_kill
             elif isinstance(self, Wolf):
+                player.gold += self.gold_for_kill
+            elif isinstance(self, Dirt_golem):
+                player.gold += self.gold_for_kill
+            elif isinstance(self, Minotaur):
                 player.gold += self.gold_for_kill
 
     def move(self, player):
