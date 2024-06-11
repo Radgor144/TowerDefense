@@ -11,5 +11,5 @@ class Dirt_golem(Enemy):
         self.gold_for_kill = 100
 
         # zdrowie jednostki
-        self.health_point = 700  # zdrowie jednostki
+        self.health_point = 1000  # zdrowie jednostki
         self.max_health = self.health_point  # maksymalna wartość punktów zdrowia

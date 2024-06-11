@@ -9,5 +9,5 @@ class Wolf(Enemy):
         self.gold_for_kill = 35
 
         # zdrowie jednostki
-        self.health_point = 50  # zdrowie jednostki
+        self.health_point = 100  # zdrowie jednostki
         self.max_health = self.health_point  # maksymalna wartość punktów zdrowia

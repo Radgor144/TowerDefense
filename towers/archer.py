@@ -17,6 +17,7 @@ class Archer(pygame.sprite.Sprite):
         # strzelanie
         self.range = 150
         self.cooldown = 800
+        self.damage = 35
         self.last_shot = pygame.time.get_ticks()
         self.selected = True
 
@@ -32,7 +33,7 @@ class Archer(pygame.sprite.Sprite):
                 distance = math.hypot(self.position[0] - enemy.rect.center[0], self.position[1] - enemy.rect.center[1])
                 if distance <= self.range:
                     # print("atak")
-                    enemy.health_point -= 34
+                    enemy.health_point -= self.damage
                     self.last_shot = pygame.time.get_ticks()  # Zaktualizuj czas ostatniego strzału
                     break
         # rysowanie zasiegu
