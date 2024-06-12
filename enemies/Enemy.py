@@ -71,16 +71,20 @@ class Enemy(pygame.sprite.Sprite):
                 player.gold += self.gold_for_kill
 
     def move(self, player):
+        from .Minotaur import Minotaur
         # define target waypoint
         if self.target_waypoint < len(self.waypoints):
             self.target = Vector2(self.waypoints[self.target_waypoint])
             self.movement = self.target - self.position
         else:
-            # enemy has reached the end of the path
-            self.kill()
-            player.health_points -= 1
-            player.gold -= 50
-            self.lose_hp_sound.play()
+            if isinstance(self, Minotaur):
+                player.health_points = 0
+            else:
+                # enemy has reached the end of the path
+                self.kill()
+                player.health_points -= 1
+                player.gold -= 50
+                self.lose_hp_sound.play()
 
         # calculate distance to target
         distance = self.movement.length()

@@ -11,5 +11,5 @@ class Minotaur(Enemy):
         self.gold_for_kill = 10000
 
         # zdrowie jednostki
-        self.health_point = 10000  # zdrowie jednostki
+        self.health_point = 5000  # zdrowie jednostki
         self.max_health = self.health_point  # maksymalna wartość punktów zdrowia

@@ -76,9 +76,9 @@ class LevelManager:
                                     (2, {"route_name": "route2", "spawn_interval": 150}),
                                     (3, {"route_name": "route3", "spawn_interval": 150})],
 
-                "dirt_golem_spawn_data": [(2, {"route_name": "route1", "spawn_interval": 400}),
-                                          (2, {"route_name": "route2", "spawn_interval": 400}),
-                                          (2, {"route_name": "route3", "spawn_interval": 400})],
+                "dirt_golem_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 400}),
+                                          (1, {"route_name": "route2", "spawn_interval": 400}),
+                                          (1, {"route_name": "route3", "spawn_interval": 400})],
 
                 "minotaur_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 200}),
                                         (0, {"route_name": "route2", "spawn_interval": 200}),
