@@ -13,7 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.heart_image = heart_image
         self.heart_rect = self.heart_image.get_rect
 
-    def draw(self, screen):
+    def draw(self, screen, level_index):
         coin_position = (10, 10)
         screen.blit(self.coin_image, coin_position)
 
@@ -25,5 +25,10 @@ class Player(pygame.sprite.Sprite):
         font = pygame.font.Font(None, 36)
         text_surface = font.render(str(self.gold), True, (255, 255, 255))
         text_position = (coin_position[0] + self.coin_rect.width + 5, coin_position[1] + 5)
+
+        text_level_index_surface = font.render(f"level: {level_index}", True, (255, 255, 255))
+        text_level_index_position = (coin_position[0] + self.coin_rect.width + 100, coin_position[1] + 5)
+
         screen.blit(text_surface, text_position)
+        screen.blit(text_level_index_surface, text_level_index_position)
 

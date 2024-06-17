@@ -10,6 +10,6 @@ class Orc(Enemy):
         self.speed = 2
         self.gold_for_kill = 25
 
-        # zdrowie jednostki
+        # Health points
         self.health_point = 100  # zdrowie jednostki
         self.max_health = self.health_point  # maksymalna wartość punktów zdrowia

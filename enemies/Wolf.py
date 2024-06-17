@@ -8,6 +8,6 @@ class Wolf(Enemy):
         self.speed = 3
         self.gold_for_kill = 35
 
-        # zdrowie jednostki
+        # Health points
         self.health_point = 100  # zdrowie jednostki
         self.max_health = self.health_point  # maksymalna wartość punktów zdrowia

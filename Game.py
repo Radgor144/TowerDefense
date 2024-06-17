@@ -130,7 +130,7 @@ def show_game_over_screen():
 
     while True:
         mapa.draw(screen)
-        player.draw(screen)
+        player.draw(screen, level_manager.current_level_index)
         enemy_group.draw(screen)
         turret_group.draw(screen)
         for archer in archer_group:
@@ -165,7 +165,7 @@ def show_victory_screen():
 
     while True:
         mapa.draw(screen)
-        player.draw(screen)
+        player.draw(screen, level_manager.current_level_index)
         enemy_group.draw(screen)
         turret_group.draw(screen)
         for archer in archer_group:
@@ -237,7 +237,7 @@ window_open = True
 IsStart = False
 while window_open:
     mapa.draw(screen)
-    player.draw(screen)
+    player.draw(screen, level_manager.current_level_index)
 
     # draw routes for mobs
     # pygame.draw.lines(screen, "grey0", False, mapa.route1)

@@ -19,8 +19,108 @@ class LevelManager:
                                    (0, {"route_name": "route2", "spawn_interval": 600}),
                                    (0, {"route_name": "route3", "spawn_interval": 600})],
             },
+            {   # 2 poziom
+                "orc_spawn_data": [(3, {"route_name": "route1", "spawn_interval": 600}),
+                                   (3, {"route_name": "route2", "spawn_interval": 600}),
+                                   (0, {"route_name": "route3", "spawn_interval": 600})],
 
-            # Dodaj więcej poziomów według potrzeb
+                "wolf_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 200}),
+                                    (1, {"route_name": "route2", "spawn_interval": 200}),
+                                    (2, {"route_name": "route3", "spawn_interval": 200})],
+            },
+            {  # 3 poziom
+                "orc_spawn_data": [(4, {"route_name": "route1", "spawn_interval": 650}),
+                                   (4, {"route_name": "route2", "spawn_interval": 650}),
+                                   (4, {"route_name": "route3", "spawn_interval": 650})],
+
+                "wolf_spawn_data": [(2, {"route_name": "route1", "spawn_interval": 200}),
+                                    (1, {"route_name": "route2", "spawn_interval": 200}),
+                                    (2, {"route_name": "route3", "spawn_interval": 200})],
+
+                "dirt_golem_spawn_data": [(0, {"route_name": "route1", "spawn_interval": 200}),
+                                          (1, {"route_name": "route2", "spawn_interval": 200}),
+                                          (0, {"route_name": "route3", "spawn_interval": 200})],
+            },
+            {  # 4 poziom
+                "orc_spawn_data": [(5, {"route_name": "route1", "spawn_interval": 450}),
+                                   (4, {"route_name": "route2", "spawn_interval": 450}),
+                                   (4, {"route_name": "route3", "spawn_interval": 450})],
+
+                "wolf_spawn_data": [(0, {"route_name": "route1", "spawn_interval": 300}),
+                                    (3, {"route_name": "route2", "spawn_interval": 300}),
+                                    (4, {"route_name": "route3", "spawn_interval": 300})],
+
+                "dirt_golem_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 400}),
+                                          (1, {"route_name": "route2", "spawn_interval": 400}),
+                                          (1, {"route_name": "route3", "spawn_interval": 400})],
+            },
+            {  # 5 poziom
+                "wolf_spawn_data": [(5, {"route_name": "route1", "spawn_interval": 300}),
+                                    (5, {"route_name": "route2", "spawn_interval": 300}),
+                                    (5, {"route_name": "route3", "spawn_interval": 300})],
+
+                "dirt_golem_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 500}),
+                                          (2, {"route_name": "route2", "spawn_interval": 500}),
+                                          (3, {"route_name": "route3", "spawn_interval": 700})],
+            },
+            {  # 6 poziom
+                "orc_spawn_data": [(5, {"route_name": "route1", "spawn_interval": 400}),
+                                   (5, {"route_name": "route2", "spawn_interval": 400}),
+                                   (5, {"route_name": "route3", "spawn_interval": 400})],
+
+                "wolf_spawn_data": [(5, {"route_name": "route1", "spawn_interval": 400}),
+                                    (2, {"route_name": "route2", "spawn_interval": 400}),
+                                    (3, {"route_name": "route3", "spawn_interval": 400})],
+
+                "dirt_golem_spawn_data": [(2, {"route_name": "route1", "spawn_interval": 400}),
+                                          (1, {"route_name": "route2", "spawn_interval": 400}),
+                                          (2, {"route_name": "route3", "spawn_interval": 400})],
+            },
+            {  # 7 poziom
+                "orc_spawn_data": [(4, {"route_name": "route1", "spawn_interval": 500}),
+                                   (5, {"route_name": "route2", "spawn_interval": 600}),
+                                   (7, {"route_name": "route3", "spawn_interval": 500})],
+
+                "wolf_spawn_data": [(3, {"route_name": "route1", "spawn_interval": 400}),
+                                    (3, {"route_name": "route2", "spawn_interval": 400}),
+                                    (4, {"route_name": "route3", "spawn_interval": 400})],
+
+                "dirt_golem_spawn_data": [(2, {"route_name": "route1", "spawn_interval": 700}),
+                                          (2, {"route_name": "route2", "spawn_interval": 700}),
+                                          (2, {"route_name": "route3", "spawn_interval": 700})],
+            },
+            {  # 8 poziom
+                "wolf_spawn_data": [(10, {"route_name": "route1", "spawn_interval": 350}),
+                                    (5, {"route_name": "route2", "spawn_interval": 400}),
+                                    (8, {"route_name": "route3", "spawn_interval": 400})],
+            },
+            {  # 9 poziom
+                "orc_spawn_data": [(10, {"route_name": "route1", "spawn_interval": 1000}),
+                                   (10, {"route_name": "route2", "spawn_interval": 2000}),
+                                   (10, {"route_name": "route3", "spawn_interval": 1500})],
+
+                "dirt_golem_spawn_data": [(3, {"route_name": "route1", "spawn_interval": 3000}),
+                                          (3, {"route_name": "route2", "spawn_interval": 3000}),
+                                          (3, {"route_name": "route3", "spawn_interval": 3000})],
+            },
+            {  # 10 poziom
+                "orc_spawn_data": [(10, {"route_name": "route1", "spawn_interval": 2000}),
+                                   (10, {"route_name": "route2", "spawn_interval": 2500}),
+                                   (10, {"route_name": "route3", "spawn_interval": 3000})],
+
+                "wolf_spawn_data": [(10, {"route_name": "route1", "spawn_interval": 1000}),
+                                    (10, {"route_name": "route2", "spawn_interval": 1000}),
+                                    (10, {"route_name": "route3", "spawn_interval": 1000})],
+
+                "dirt_golem_spawn_data": [(5, {"route_name": "route1", "spawn_interval": 3000}),
+                                          (5, {"route_name": "route2", "spawn_interval": 3000}),
+                                          (5, {"route_name": "route3", "spawn_interval": 3000})],
+
+                "minotaur_spawn_data": [(1, {"route_name": "route1", "spawn_interval": 200}),
+                                        (0, {"route_name": "route2", "spawn_interval": 200}),
+                                        (0, {"route_name": "route3", "spawn_interval": 200})],
+            },
+
         ]
 
         for config in self.level_configs:
