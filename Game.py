@@ -94,9 +94,8 @@ def show_welcome_screen():
     start_button_image = pygame.image.load("assets/content/UI/Button_Hover_3Slides.png").convert_alpha()
     start_button_rect = start_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
 
-    # Utworzenie przezroczystego Surface z trybem alfa
     transparent_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
-    transparent_surface.fill((0, 0, 0, 128))  # Czarny z przezroczystością 50%
+    transparent_surface.fill((0, 0, 0, 128))
 
     while True:
         screen.fill((0, 0, 0))
@@ -116,7 +115,7 @@ def show_welcome_screen():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if start_button_rect.collidepoint(event.pos):
-                    return  # Exit the welcome screen loop and start the game
+                    return
 
         pygame.display.flip()
         clock.tick(FPS)
@@ -126,19 +125,16 @@ def show_game_over_screen():
     start_button_image = pygame.image.load("assets/content/UI/Button_Red_3Slides.png").convert_alpha()
     start_button_rect = start_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
 
-    # Utworzenie przezroczystego Surface z trybem alfa
     transparent_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
-    transparent_surface.fill((0, 0, 0, 128))  # Czarny z przezroczystością 50%
+    transparent_surface.fill((0, 0, 0, 128))
 
     while True:
-        # Zaktualizuj ekran gry przed nałożeniem przezroczystego tła
         mapa.draw(screen)
         player.draw(screen)
         enemy_group.draw(screen)
         turret_group.draw(screen)
         for archer in archer_group:
             archer.draw(screen)
-            draw_turret_range(archer, screen)
 
         screen.blit(transparent_surface, (0, 0))
         screen.blit(start_button_image, start_button_rect)
@@ -164,12 +160,10 @@ def show_victory_screen():
     start_button_image = pygame.image.load("assets/content/UI/Ribbon_Blue_3Slides.png").convert_alpha()
     start_button_rect = start_button_image.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 100))
 
-    # Utworzenie przezroczystego Surface z trybem alfa
     transparent_surface = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.SRCALPHA)
-    transparent_surface.fill((0, 0, 0, 128))  # Czarny z przezroczystością 50%
+    transparent_surface.fill((0, 0, 0, 128))
 
     while True:
-        # Zaktualizuj ekran gry przed nałożeniem przezroczystego tła
         mapa.draw(screen)
         player.draw(screen)
         enemy_group.draw(screen)
@@ -245,9 +239,10 @@ while window_open:
     mapa.draw(screen)
     player.draw(screen)
 
-    pygame.draw.lines(screen, "grey0", False, mapa.route1)
-    pygame.draw.lines(screen, "grey0", False, mapa.route2)
-    pygame.draw.lines(screen, "grey0", False, mapa.route3)
+    # draw routes for mobs
+    # pygame.draw.lines(screen, "grey0", False, mapa.route1)
+    # pygame.draw.lines(screen, "grey0", False, mapa.route2)
+    # pygame.draw.lines(screen, "grey0", False, mapa.route3)
 
     if level_manager.current_level_index < len(level_manager.levels):
         Start_wave_button.update(screen, level_manager.level_configs, level_manager.current_level_index)
@@ -294,7 +289,7 @@ while window_open:
         show_game_over_screen()
         window_open = False
 
-    if level_manager.victory:
+    elif level_manager.victory:
         show_victory_screen()
 
     clock.tick(FPS)

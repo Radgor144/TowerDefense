@@ -61,6 +61,7 @@ class Level:
                         spawn_var[route_name] += 1
                         timer_var[route_name] = current_time
 
+        # condition of victory wave
         if len(self.enemy_group) == 0 and not self.victory_played:
             self.victory_wave_sound.play()
             self.victory_played = True

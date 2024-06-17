@@ -8,13 +8,11 @@ class Archer(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         x, y = position
-        self.rect.centerx = tower_rect.centerx - x  # Ustaw pozycję na środku wieży
-        self.rect.bottom = tower_rect.top + y  # Ustaw pozycję na górze wieży
+        self.rect.centerx = tower_rect.centerx - x
+        self.rect.bottom = tower_rect.top + y
 
-        # pozycja archera
         self.position = self.rect.center
 
-        # strzelanie
         self.range = 150
         self.cooldown = 800
         self.damage = 35
@@ -28,7 +26,7 @@ class Archer(pygame.sprite.Sprite):
 
     def update(self, enemy_group):
         if pygame.time.get_ticks() - self.last_shot > self.cooldown:
-            # Znajdź pierwszego wroga w zasięgu i zaatakuj
+            # find the first target in range and attack it
             for enemy in enemy_group:
                 distance = math.hypot(self.position[0] - enemy.rect.center[0], self.position[1] - enemy.rect.center[1])
                 if distance <= self.range:
@@ -36,7 +34,7 @@ class Archer(pygame.sprite.Sprite):
                     enemy.health_point -= self.damage
                     self.last_shot = pygame.time.get_ticks()  # Zaktualizuj czas ostatniego strzału
                     break
-        # rysowanie zasiegu
+        # draw distance
         self.range_image = pygame.Surface((self.range * 2, self.range * 2))
         self.range_image.fill((0, 0, 0))
         self.range_image.set_colorkey((0, 0, 0))

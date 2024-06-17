@@ -5,7 +5,7 @@ import math
 class Enemy(pygame.sprite.Sprite):
 
     def __init__(self, waypoints, image):
-        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
         self.waypoints = waypoints
         self.position = Vector2(self.waypoints[0])
         self.target_waypoint = 1
@@ -22,42 +22,29 @@ class Enemy(pygame.sprite.Sprite):
         #modify music
         self.enemy_death_sound.set_volume(0.05)
 
-        # Pasek zdrowia
-        self.hp_rect = pygame.Rect(0, 0, 20, 5)  # początkowe ustawienia prostokąta paska HP
-
-        # Timer do odliczania czasu do odjęcia punktów zdrowia
-        # self.health_timer = pygame.time.get_ticks()
-        # self.health_interval = 50  # Czas w milisekundach między odjęciami punktów zdrowia
+        # Health bar
+        self.hp_rect = pygame.Rect(0, 0, 20, 5)
 
     def update(self, player):
         self.move(player)
         self.rotate()
-        self.hp_position()  # Aktualizuj pozycję paska HP
+        self.hp_position()
 
-
-        # Aktualizuj pasek HP
+        # Update health bar
         self.update_health_bar(player)
-
-        # Odjęcie punktów zdrowia co pewien czas
-        # now = pygame.time.get_ticks()
-        # if now - self.health_timer > self.health_interval:
-        #     self.health_timer = now
-        #     self.health_point -= 1
-        #     if self.health_point <= 0:
-        #         self.kill()  # Jeśli zdrowie spadnie do zera lub mniej, usuń jednostkę
 
     def hp_position(self):
         x, y = self.rect.center
-        self.hp_rect.topleft = (x - 10, y - 20)  # Aktualizuj pozycję paska HP
+        self.hp_rect.topleft = (x - 10, y - 20)
 
     def update_health_bar(self, player):
         from .Orc import Orc
         from .Wolf import Wolf
         from .Dirt_golem import Dirt_golem
         from .Minotaur import Minotaur
-        # Oblicz szerokość paska HP proporcjonalnie do aktualnego zdrowia
+        # Health bar width
         health_width = int((self.health_point / self.max_health) * 20)
-        self.hp_rect.width = max(health_width, 0)  # Szerokość paska HP nie może być mniejsza niż 0
+        self.hp_rect.width = max(health_width, 0)
         if self.health_point <= 0:
             self.kill()
             self.enemy_death_sound.play()

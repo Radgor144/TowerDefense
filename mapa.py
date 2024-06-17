@@ -8,11 +8,11 @@ class Mapa:
         self.route3 = []
 
     def proccess_data(self):
-        # wczytanie danych z jsona
+        # read json file
         for layer in self.level_data["layers"]:
             if layer["name"] == "trasy":
                 for obj in layer["objects"]:
-                    route_name = obj.get("name")  # Pobieramy nazwę trasy
+                    route_name = obj.get("name")
                     route_data = obj["polyline"]
 
                     if route_name == "trasa1":

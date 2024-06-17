@@ -42,11 +42,12 @@ class Start_wave_button:
 
         mobs_to_check = ["orc", "wolf", "minotaur", "dirt_golem"]  # Lista mobów do sprawdzenia
 
-        for i in range(1, 4):  # Iteracja po trasach
-            for mob in mobs_to_check:  # Iteracja po mobach
+        for i in range(1, 4):  # IteraIteration on routes
+            for mob in mobs_to_check:  # Iteration on mobs
                 spawn_data = config.get(f"{mob}_spawn_data", [])
                 if any(amount > 0 for amount, route in spawn_data if route['route_name'] == f"route{i}"):
-                    setattr(self, f"is_button_shown{i}", True)  # Ustawienie flagi pokazania przycisku dla danej trasy
+                    # show button on route where mobs will spawn in next wave
+                    setattr(self, f"is_button_shown{i}", True)
 
         self.show_button(screen)
 

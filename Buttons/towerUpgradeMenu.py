@@ -8,14 +8,14 @@ class TowerUpgradeMenu:
     def __init__(self):
         self.upgrade_button_image = pygame.image.load("assets/content/UI/Button_Hover.png").convert_alpha()
         self.menu_surface = pygame.Surface((0, 0))
-        self.menu_rect = pygame.Rect(0, 0, 64, 64)  # Prostokąt menu
+        self.menu_rect = pygame.Rect(0, 0, 64, 64)
         self.button_rect = self.menu_rect
         self.is_menu_shown = False
         self.cost = 100
         self.cost_rect = self.menu_rect
 
     def show_menu(self, surface, turret_position, upgrade_cost):
-        # Ustaw pozycję menu
+        # position of menu
         x, y = turret_position
         self.menu_rect.topleft = (x, y - 100)
         self.cost = upgrade_cost
@@ -26,10 +26,8 @@ class TowerUpgradeMenu:
         self.is_menu_shown = False
 
     def update(self, surface):
-        # Sprawdź, czy menu powinno być wyświetlane
         if self.is_menu_shown:
             surface.blit(self.menu_surface, self.menu_rect)
-            # Umieść przycisk na środku menu
             self.button_rect = self.menu_rect
             surface.blit(self.upgrade_button_image, self.button_rect)
 
